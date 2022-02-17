@@ -1,3 +1,9 @@
+class ItemNotFound extends Error {
+}
+
+class NoFunds extends Error {
+}
+
 class BankAccount {
     constructor(starting) {
         this.balance = starting;
@@ -14,13 +20,13 @@ class VendingMachine {
     buy(account, item) {
         const price = this.items.get(item);
         if (price == undefined) {
-            throw new Error('The vending machine does not have that item.');
-        } else if (price <= account.balance) {
+            throw new ItemNotFound('The vending machine does not have that item.');
+        } if (price <= account.balance) {
             account.balance -= price;
 
             console.log(`You purchased a ${item}.`);
         } else {
-            throw new Error('Not enough money!');
+            throw new NoFunds('Not enough money!');
         }
     }
 }
@@ -31,9 +37,13 @@ class App {
         const machine = new VendingMachine();
 
         try {
-            machine.buy(account, 'Dog');           
-        } catch (err) {
-            console.log('Not enough money!');
+            machine.buy(account, 'Lipstick');           
+        } catch (error) {
+            if (error instanceof ItemNotFound) {
+                console.log('The vending machine does not have that item.');
+            } else if (error instanceof NoFunds) {
+                console.log('You do not have enough money!');
+            }
         }
         
     }
