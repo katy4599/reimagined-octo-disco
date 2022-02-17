@@ -1,63 +1,42 @@
-class Pet {
-    constructor(species) {
-        this.species = species;
-    }
-
-    describe() {
-        console.log(`This pest is a ${this.species}.`);
-
+class BankAccount {
+    constructor(starting) {
+        this.balance = starting;
     }
 }
-
-class Dog extends Pet {
-    constructor(owner, breed, age) {
-        super('dog');
-        this.owner = owner;
-        this.breed = breed;
-        this.age = age;
+class VendingMachine {
+    constructor() {
+        this.items = new Map();
+        this.items.set('Snickers', 1.00);
+        this.items.set('Sprite', 2.00);
+        this.items.set('Sock', 5.00);
+        this.items.set('Dog', 20.00);
     }
+    buy(account, item) {
+        const price = this.items.get(item);
+        if (price == undefined) {
+            throw new Error('The vending machine does not have that item.');
+        } else if (price <= account.balance) {
+            account.balance -= price;
 
-    bark() {
-        console.log('This dog barks constantly!');
-    }
-    
-    describe() {
-        console.log(
-            `This dog is a ${this.age} `
-            + `year old ${this.breed}, owned by ${this.owner}.`
-        );
-    }
-}
-
-class Cat extends Pet {
-    constructor(owner, breed, age) {
-        super('cat');
-        this.owner = owner;
-        this.breed = breed;
-        this.age = age;
-    }
-
-    meow() {
-        console.log('This cat meows constantly!');
-    }
-
-    describe() {
-        console.log(
-            `This cat is a ${this.age} `
-            + `year old ${this.breed}, owned by ${this.owner}.`
-        );
+            console.log(`You purchased a ${item}.`);
+        } else {
+            throw new Error('Not enough money!');
+        }
     }
 }
 
 class App {
     static main() {
-        const myPet = new Pet('dog');
-        const myCat = new Cat('Gunner', 'psycho', 2);
-        const myDog = new Dog('Katy', 'mutt', 4)
-        myDog.describe();
-        myDog.bark();
-        myCat.describe();
-        myCat.meow();
+        const account = new BankAccount(15);
+        const machine = new VendingMachine();
+
+        try {
+            machine.buy(account, 'Dog');           
+        } catch (err) {
+            console.log('Not enough money!');
+        }
+        
     }
 }
+
 App.main();
