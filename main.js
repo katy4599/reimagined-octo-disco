@@ -38,8 +38,7 @@ class App {
     static async main() {
         const account = new BankAccount();
         const machine = new VendingMachine();
-        const balance = await input.text('How much money is in your account?');
-            balance.toString();
+        const balance = Number(await input.text('How much money is in your account?'));
         const item = await input.text('What would you like to buy?');
         
         try {
